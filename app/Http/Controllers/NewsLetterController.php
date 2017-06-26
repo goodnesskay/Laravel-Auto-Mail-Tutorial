@@ -51,7 +51,7 @@ class NewsLetterController extends Controller
     public function autoMail(Request $request)
     {
         $this->validate($request, [
-            'email'=>'required|distinct'
+            'email'=>'required'
         ]);
 
         $newsletter = new NewsLetter();
@@ -59,7 +59,7 @@ class NewsLetterController extends Controller
 
         if ($newsletter->save())
         {
-            Mail::to(['email',$newsletter->email])->send(new Success($newsletter));
+            Mail::to($newsletter->email)->send(new Success($newsletter));
             return redirect()->back()->with('alert','You have successfully applied for our Newsletter');
         }else{
             return redirect()->back()->withErrors($validator);
